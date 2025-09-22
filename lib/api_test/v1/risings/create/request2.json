@@ -1,0 +1,10 @@
+{
+    "rising_information": {
+        "item_id": 4,
+        "market_price": 2400,
+        "description": "ブルーアイズホワイトドラゴンの初版が市場で品薄状態。コレクター需要が急増しています。",
+        "appreciation_rate": 200.0,
+        "is_displayed": true,
+        "created_by_user_id": "user_456"
+    }
+}

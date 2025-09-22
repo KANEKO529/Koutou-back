@@ -1,0 +1,15 @@
+{
+    "item": {
+      "item_name": "遊戯王 青眼の白龍 ホログラフィック",
+      "model_number": "",
+      "regular_price": 1200,
+      "release_date": "1999-02-04"
+    },
+    "rising_information": {
+      "market_price": 9600,
+      "description": "キーワード2語一致（遊戯王、青眼の白龍）+ 発売日一致で検出",
+      "appreciation_rate": 700.0,
+      "is_displayed": true,
+      "created_by_user_id": "admin_003"
+    }
+}

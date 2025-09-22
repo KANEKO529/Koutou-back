@@ -1,0 +1,11 @@
+{
+    "item": {
+      "item_name": "ワンピースカード ルフィ",
+      "model_number": "OP-003",
+      "regular_price": 300,
+      "release_date": "2025-02-01",
+      "merkari_url": "https://jp.mercari.com/item/onepiece-luffy",
+      "merkari_image_url": "https://jp.mercari.com/item/onepiece-luffy/image",
+      "image_url": "https://example.com/luffy.jpg"
+    }
+}

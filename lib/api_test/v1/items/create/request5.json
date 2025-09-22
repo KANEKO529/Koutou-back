@@ -1,0 +1,11 @@
+{
+    "item": {
+      "item_name": "デュエルマスターズ ボルメテウス・ホワイト・ドラゴン",
+      "model_number": "DM-005",
+      "regular_price": 1200,
+      "release_date": "2024-10-05",
+      "merkari_url": "https://jp.mercari.com/item/duelmaster-bolmeteus",
+      "merkari_image_url": "https://jp.mercari.com/item/duelmaster-bolmeteus/image",
+      "image_url": "https://example.com/bolmeteus.jpg"
+    }
+}

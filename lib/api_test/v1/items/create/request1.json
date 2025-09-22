@@ -1,0 +1,11 @@
+{
+    "item": {
+      "item_name": "ポケモンカード ピカチュウ",
+      "model_number": "PKM-001",
+      "regular_price": 500,
+      "release_date": "2025-01-15",
+      "merkari_url": "https://jp.mercari.com/item/example",
+      "merkari_image_url": "https://jp.mercari.com/item/example",
+      "image_url": "https://example.com/image.jpg"
+    }
+}

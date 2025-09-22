@@ -1,0 +1,11 @@
+{
+    "item": {
+      "item_name": "遊戯王 ブルーアイズホワイトドラゴン",
+      "model_number": "YGO-002",
+      "regular_price": 800,
+      "release_date": "2024-12-20",
+      "merkari_url": "https://jp.mercari.com/item/yugioh-blueyes",
+      "merkari_image_url": "https://jp.mercari.com/item/yugioh-blueyes/image",
+      "image_url": "https://example.com/blueyes.jpg"
+    }
+}

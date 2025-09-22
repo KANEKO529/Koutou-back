@@ -1,0 +1,18 @@
+{
+    "item": {
+      "item_name": "バトルスピリッツ 創界神ネクサス XX",
+      "model_number": "BS-XX01",
+      "regular_price": 1500,
+      "release_date": "2024-12-21",
+      "merkari_url": "https://jp.mercari.com/item/bs-souseishin-nexus",
+      "merkari_image_url": "https://jp.mercari.com/item/bs-souseishin-nexus/image",
+      "image_url": "https://example.com/souseishin-nexus.jpg"
+    },
+    "rising_information": {
+      "market_price": 6000,
+      "description": "バトスピ復活の記念すべき新シリーズの最高レアリティ。限定生産により4倍の価格に上昇しています。",
+      "appreciation_rate": 300.0,
+      "is_displayed": true,
+      "created_by_user_id": "admin_005"
+    }
+}
