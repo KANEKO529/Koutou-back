@@ -17,9 +17,13 @@ Rails.application.routes.draw do
         # 管理者用API
       namespace :admin do
         get 'rising-items', to: 'rising_items#index' # GET /api/v1/admin/rising-items
-        get 'rising-items/:id', to: 'rising_items#show'
-        post 'rising-items', to: 'rising_items#create'        
-        put 'rising-items/:id', to: 'rising_items#update'
+        get 'rising-items/:id', to: 'rising_items#show' # GET /api/v1/admin/rising-items/:id
+        post 'rising-items', to: 'rising_items#create'# POST /api/v1/admin/rising-items/:id    
+        put 'rising-items/:id', to: 'rising_items#update'# PUT /api/v1/admin/rising-items/:id
+
+        # キーワード検索
+        # get 'rising-items?keyword=', to: 'rising_items#index' # GET /api/v1/admin/rising-items
+
 
         resources :items, only: [:index, :create]
         # resources :users, only: [:index, :update] # 優先度低

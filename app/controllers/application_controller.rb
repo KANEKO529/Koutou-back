@@ -37,6 +37,8 @@ class ApplicationController < ActionController::API
       # セッションも作成（verifyと同じ処理）
       session[:user_id] = @current_user.id
       session[:role] = @current_user.role
+
+      puts "✅ Create Rails session: #{session[:user_id]}, #{session[:role]}"
       
     rescue => e
       Rails.logger.error "Authentication failed: #{e.message}"

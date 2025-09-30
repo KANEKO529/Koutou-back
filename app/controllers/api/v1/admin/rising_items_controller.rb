@@ -4,19 +4,26 @@ before_action :set_rising_information, only: [:show, :update, :destroy]  # こ�
 
     # GET /api/v1/admin/rising-items
     def index
-        @rising_items = RisingInformation.includes(:item)
-                                    .displayed
-                                    .by_appreciation_rate
-        
-        render json: {
+      @rising_items = RisingInformation.displayed
+                                      .by_appreciation_rate
+
+      # キーワード検索（includesの前に適用）
+      if params[:keyword].present?
+        @rising_items = @rising_items.search_by_keyword(params[:keyword])
+      end
+      
+      # includesは最後に適用
+      @rising_items = @rising_items.includes(:item)
+      
+      render json: {
         status: 'success',
         data: @rising_items.map { |rising| rising_item_data(rising) }
-        }
+      }
     rescue StandardError => e
-        render json: {
+      render json: {
         status: 'error',
         message: "データの取得に失敗しました: #{e.message}"
-        }, status: :internal_server_error
+      }, status: :internal_server_error
     end
 
     # GET /api/v1/rising-items/:id
