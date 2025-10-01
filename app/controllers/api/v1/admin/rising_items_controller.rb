@@ -4,8 +4,7 @@ before_action :set_rising_information, only: [:show, :update, :destroy]  # こ�
 
     # GET /api/v1/admin/rising-items
     def index
-      @rising_items = RisingInformation.displayed
-                                      .by_appreciation_rate
+      @rising_items = RisingInformation
 
       # キーワード検索（includesの前に適用）
       if params[:keyword].present?
@@ -13,7 +12,8 @@ before_action :set_rising_information, only: [:show, :update, :destroy]  # こ�
       end
       
       # includesは最後に適用
-      @rising_items = @rising_items.includes(:item)
+      # @rising_items = @rising_items.includes(:item)
+      @rising_items = @rising_items.includes(:item).order('rising_informations.id DESC')
       
       render json: {
         status: 'success',

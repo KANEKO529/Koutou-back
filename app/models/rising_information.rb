@@ -13,7 +13,7 @@ class RisingInformation < ApplicationRecord
 
     # スコープ
     scope :displayed, -> { where(is_displayed: true) }
-    scope :by_appreciation_rate, -> { order(appreciation_rate: :desc) }
+    # scope :by_appreciation_rate, -> { order(appreciation_rate: :desc) }
 
     # キーワード検索スコープ（OR検索）
     scope :search_by_keyword, ->(keyword) {

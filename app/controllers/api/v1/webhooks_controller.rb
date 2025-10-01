@@ -1,5 +1,5 @@
 # app/controllers/webhooks_controller.rb
-class WebhooksController < ApplicationController
+class Api::V1::WebhooksController < ApplicationController
   
     def clerk
       puts "🔗 Webhook received from Clerk"

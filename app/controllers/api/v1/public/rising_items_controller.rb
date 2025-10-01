@@ -3,9 +3,18 @@ class Api::V1::Public::RisingItemsController < ApplicationController
 
   # GET /api/v1/public/rising-items
   def index
-    @rising_items = RisingInformation.includes(:item)
-                                   .displayed
-                                   .by_appreciation_rate
+    @rising_items = RisingInformation.displayed
+
+    # キーワード検索（includesの前に適用）
+    if params[:keyword].present?
+      @rising_items = @rising_items.search_by_keyword(params[:keyword])
+    end
+    
+    # includesは最後に適用
+    # @rising_items = @rising_items.includes(:item)
+    # puts "#{@rising_items.includes(:item)}"
+    @rising_items = @rising_items.includes(:item).order('rising_informations.id DESC')
+
     
     render json: {
       status: 'success',
@@ -46,7 +55,6 @@ class Api::V1::Public::RisingItemsController < ApplicationController
       appreciation_rate: rising.appreciation_rate,
       description: rising.description,
       is_displayed: rising.is_displayed,
-      created_by_user_id: rising.created_by_user_id,
       
       # 商品情報
       item_id: item.id,
