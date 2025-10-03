@@ -16,6 +16,10 @@ test:
   database: storage/test.sqlite3
 
 
+production:
+<<: *default
+url: <%= ENV['DATABASE_URL'] %>
+
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
