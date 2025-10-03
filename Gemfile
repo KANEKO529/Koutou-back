@@ -9,7 +9,7 @@ gem "sqlite3", ">= 2.1"
 # Use the Puma web server [https://github.com/puma/puma]
 
 # Webサーバー
-gem "puma", "~> 6.0", group: [:development, :test]  # 開発環境では Puma を使用
+gem "puma", "~> 7.0", group: [:development, :test]  # 開発環境では Puma を使用
 # 本番環境のみ Unicorn を使用
 group :production do
   gem "unicorn"
