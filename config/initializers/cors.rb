@@ -50,6 +50,8 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
 
   allow do
     # セッションを使う API（cookie 同送）
+    origins frontend_origin
+    
     resource "/api/v1/auth/*",
       headers: :any,
       methods: %i[get post delete options head],
