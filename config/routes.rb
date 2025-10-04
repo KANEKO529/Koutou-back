@@ -24,7 +24,6 @@ Rails.application.routes.draw do
         # キーワード検索
         # get 'rising-items?keyword=', to: 'rising_items#index' # GET /api/v1/admin/rising-items
 
-
         resources :items, only: [:index, :create]
         # resources :users, only: [:index, :update] # 優先度低
       end
