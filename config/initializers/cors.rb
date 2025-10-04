@@ -26,18 +26,17 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   frontend_origin = ENV.fetch("CORS_ORIGINS_FRONTEND", "http://localhost:3000")
 
-  # ログはフェッチ済みの値を使う（ENV.fetch 連発で例外を避ける）
   Rails.logger.info "=== CORS Configuration ==="
   Rails.logger.info "CORS_ORIGINS_FRONTEND: #{frontend_origin}"
-  Rails.logger.info "CORS_ORIGINS_API: #{ENV['CORS_ORIGINS_API']}"  # 参照だけにする
   Rails.logger.info "Rails Environment: #{Rails.env}"
   Rails.logger.info "=========================="
 
   allow do
     origins frontend_origin
-
     resource "/api/*",
-      headers: :any,  # もしくは %w[Authorization Content-Type X-Requested-With]
-      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      headers: :any,                               # 必要なら %w[Authorization Content-Type]
+      methods: %i[get post put patch delete options head],
+      expose:  %w[Authorization],                  # フロントで読む必要があるヘッダだけ
+      credentials: false                           # Cookie を使うなら true に
   end
 end
