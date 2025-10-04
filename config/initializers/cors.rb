@@ -1,18 +1,11 @@
-# config/initializers/cors.rb
-Rails.application.config.middleware.insert_before 0, Rack::Cors,
-  debug: true,
-  logger: -> { Rails.logger } do
+Rails.application.config.middleware.insert_before 0, Rack::Cors do
 
   frontend_origin = ENV.fetch("CORS_ORIGINS_FRONTEND", "http://localhost:3000")
-  # 複数許可したいときは:
-  # frontend_origins = frontend_origin.split(/\s*,\s*/)
-  # origins(*frontend_origins) を使う
 
   Rails.logger.info "=== CORS Configuration ==="
   Rails.logger.info "CORS_ORIGINS_FRONTEND: #{frontend_origin}"
   Rails.logger.info "Rails Environment: #{Rails.env}"
   Rails.logger.info "=========================="
-
   allow do
     origins frontend_origin
 
@@ -24,7 +17,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors,
       credentials: true,
       max_age: 600
 
-    # 管理系
+    # 管理系（トークンだけで運用するなら credentials: false のままでOK）
     resource "/api/v1/admin/*",
       headers: %w[authorization content-type],
       methods: %i[get post put patch delete options head],
@@ -32,7 +25,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors,
       credentials: false,
       max_age: 600
 
-    # 公開系
+    # 公開系（将来カスタムヘッダを入れても落ちないよう options を許可）
     resource "/api/v1/public/*",
       headers: %w[authorization content-type],
       methods: %i[get options head],
@@ -40,7 +33,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors,
       credentials: false,
       max_age: 600
 
-    # その他
+    # その他API（必要なものを列挙／あるいは最後にまとめて /api/v1/* を用意）
     resource "/api/v1/risings/*",
       headers: %w[authorization content-type],
       methods: %i[get post put patch delete options head],
