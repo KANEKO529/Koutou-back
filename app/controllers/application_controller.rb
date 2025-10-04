@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
+  around_action :_debug_header_arrays
 
   private
 
@@ -57,5 +58,15 @@ class ApplicationController < ActionController::API
 
   def current_user_clerk_id
     @current_user_clerk_id
+  end
+
+  def _debug_header_arrays
+    yield
+  ensure
+    bad = response.headers.select { |k, v| !k.is_a?(String) || (!v.nil? && !v.is_a?(String)) }
+    if bad.any?
+      Rails.logger.error "[HeadersBug] BAD HEADERS => " +
+        bad.map { |k, v| "#{k.inspect}(#{k.class}) => #{v.inspect}(#{v.class})" }.join(" | ")
+    end
   end
 end
