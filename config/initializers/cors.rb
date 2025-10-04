@@ -58,8 +58,29 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
       credentials: true,
       max_age: 7200
 
+    resource "/api/v1/admin/*",
+      headers: :any,
+      methods: %i[get post put patch delete options head],
+      expose:  %w[Authorization],
+      credentials: false,
+      max_age: 7200
+
+    resource "/api/v1/public/*",
+      headers: :any,
+      methods: %i[get],
+      expose:  %w[Authorization],
+      credentials: false,
+      max_age: 7200
+
     # 2) それ以外（auth を除外）
-    resource %r{\A/api/(?!v1/auth/).*},
+    resource "/api/v1/risings/*",
+      headers: :any,
+      methods: %i[get post put patch delete options head],
+      expose:  %w[Authorization],
+      credentials: false,
+      max_age: 7200
+
+    resource "/api/v1/items/*",
       headers: :any,
       methods: %i[get post put patch delete options head],
       expose:  %w[Authorization],

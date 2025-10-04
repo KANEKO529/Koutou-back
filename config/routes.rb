@@ -42,17 +42,12 @@ Rails.application.routes.draw do
         post '', to: 'risings#create'         # POST /api/v1/risings
         put ':id', to: 'risings#update'       # PUT /api/v1/risings/:id
         delete ':id', to: 'risings#destroy'   # DELETE /api/v1/risings/:id
-
         put ':id/toggle-display', to: 'risings#toggle_display'       # PUT /api/v1/risings/:id
-
-
-
       end
 
       namespace :public do
         get 'rising-items', to: 'rising_items#index'  # GET /api/v1/public/risings-items
         get 'rising-items/:id', to: 'rising_items#show' # GET /api/v1/public/risings-items/:id
-
       end
 
       # ユーザー関連
