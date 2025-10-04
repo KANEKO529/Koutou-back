@@ -37,6 +37,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
       headers: :any,                               # 必要なら %w[Authorization Content-Type]
       methods: %i[get post put patch delete options head],
       expose:  %w[Authorization],                  # フロントで読む必要があるヘッダだけ
-      credentials: true, 
+      credentials: true
   end
 end
