@@ -9,12 +9,20 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     origins frontend_origin
 
     # 認証系（Cookie/資格情報を送る）
-    resource "/api/v1/auth/*",
-      headers: %w[authorization content-type],
-      methods: %i[get post delete options head],
-      expose:  %w[Authorization],
-      credentials: true,
-      max_age: 600
+    # resource "/api/v1/auth/*",
+    #   headers: %w[authorization content-type],
+    #   methods: %i[get post delete options head],
+    #   expose:  %w[Authorization],
+    #   credentials: true,
+    #   max_age: 600
+
+    debug: true, logger: -> { Rails.logger } do
+      resource "/api/v1/auth/*",
+        headers: %w[authorization content-type x-csrf-token],
+        methods: %i[get post delete options head],
+        credentials: true,
+        max_age: 600
+    end
 
     # 管理系（トークンだけで運用するなら credentials: false のままでOK）
     resource "/api/v1/admin/*",
