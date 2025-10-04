@@ -37,13 +37,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     origins frontend_origin
 
     resource "/api/*",
-      # 本番は明示列挙か :any のどちらか。ngrok ヘッダは不要なので削除。
       headers: :any,  # もしくは %w[Authorization Content-Type X-Requested-With]
       methods: [:get, :post, :put, :patch, :delete, :options, :head],
-      # クッキー/セッションを使うなら true（SameSite=None; Secure も忘れずに）
-      credentials: false,
-      # JS から読みたいレスポンスヘッダ（必要最小限）
-      expose: %w[Authorization],
-      max_age: 86400
   end
 end
