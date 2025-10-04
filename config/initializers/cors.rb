@@ -47,22 +47,19 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   Rails.logger.info "CORS_ORIGINS_FRONTEND: #{frontend_origin}"
   Rails.logger.info "Rails Environment: #{Rails.env}"
   Rails.logger.info "=========================="
-
-  # 認証系: Cookie 同送する
   allow do
     origins frontend_origin
+
+    # 1) 認証系（Cookie 同送が必要）
     resource "/api/v1/auth/*",
       headers: :any,
       methods: %i[get post delete options head],
       expose:  %w[Authorization],
       credentials: true,
       max_age: 7200
-  end
 
-  # それ以外: Cookie 不要
-  allow do
-    origins frontend_origin
-    resource "/api/v1/*",
+    # 2) それ以外（auth を除外）
+    resource %r{\A/api/(?!v1/auth/).*},
       headers: :any,
       methods: %i[get post put patch delete options head],
       expose:  %w[Authorization],
