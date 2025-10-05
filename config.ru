@@ -3,5 +3,5 @@
 require_relative "config/environment"
 
 run Rails.application
-use HeaderSanitizer   # ← これで確実に入る
+# use HeaderSanitizer   # ← これで確実に入る
 Rails.application.load_server
