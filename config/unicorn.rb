@@ -21,7 +21,6 @@ stdout_path $std_log
 timeout $timeout
 listen  $listen
 pid $pid
-daemonize false    # ★ systemdで管理するのでフォークしない
 #ホットデプロイをするかしないかを設定
 preload_app true
 
