@@ -3,7 +3,7 @@ class Api::V1::Public::AnnouncementsController < ApplicationController
   def index
     @announcements = Announcement.includes(:tags)
                                     .where(status: true)
-                                    .order(published_at: :desc)
+                                    .order(published_at: :asc)
 
     render json: {
       status: 'success',

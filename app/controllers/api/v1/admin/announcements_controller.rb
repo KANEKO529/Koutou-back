@@ -1,7 +1,7 @@
 class Api::V1::Admin::AnnouncementsController < ApplicationController
   # GET /api/v1/admin/announcements
   def index
-    @announcements = Announcement.includes(:tags).order(published_at: :desc)
+    @announcements = Announcement.includes(:tags).order(published_at: :asc)
 
     render json: {
       status: 'success',
