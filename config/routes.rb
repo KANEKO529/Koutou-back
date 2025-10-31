@@ -16,6 +16,16 @@ Rails.application.routes.draw do
 
         # 管理者用API
       namespace :admin do
+        get "tags/index"
+        get "tags/show"
+        get "tags/create"
+        get "tags/update"
+        get "tags/destroy"
+        get "announcements/index"
+        get "announcements/show"
+        get "announcements/create"
+        get "announcements/update"
+        get "announcements/destroy"
         get 'rising-items', to: 'rising_items#index' # GET /api/v1/admin/rising-items
         get 'rising-items/:id', to: 'rising_items#show' # GET /api/v1/admin/rising-items/:id
         post 'rising-items', to: 'rising_items#create'# POST /api/v1/admin/rising-items/:id    
@@ -24,34 +34,47 @@ Rails.application.routes.draw do
         # キーワード検索
         # get 'rising-items?keyword=', to: 'rising_items#index' # GET /api/v1/admin/rising-items
 
-        resources :items, only: [:index, :create]
-        # resources :users, only: [:index, :update] # 優先度低
+        resources :items, only: [:index, :show, :create, :update, :destroy]
+        # resources :users, only: [:index, :update] # 優先度低git push -u origin feature/ブランチ名
+
+        resources :announcements, only: [:index, :show, :create, :update, :destroy]
+        resources :tags, only: [:index, :show, :create, :update, :destroy]
       end
 
+      
       namespace :items do
-        get '', to: 'items#index'           # GET /api/v1/items
-        get ':id', to: 'items#show'         # GET /api/v1/items/:id
-        post '', to: 'items#create'         # POST /api/v1/items
-        put ':id', to: 'items#update'       # PUT /api/v1/items/:id
-        delete ':id', to: 'items#destroy'   # DELETE /api/v1/items/:id
+
+        resources :items, only: [:index, :show, :create, :update, :destroy]
+
+        # get '', to: 'items#index'           # GET /api/v1/items
+        # get ':id', to: 'items#show'         # GET /api/v1/items/:id
+        # post '', to: 'items#create'         # POST /api/v1/items
+        # put ':id', to: 'items#update'       # PUT /api/v1/items/:id
+        # delete ':id', to: 'items#destroy'   # DELETE /api/v1/items/:id
       end
 
       namespace :risings do
-        get '', to: 'risings#index'           # GET /api/v1/risings
-        get ':id', to: 'risings#show'         # GET /api/v1/risings/:id
-        post '', to: 'risings#create'         # POST /api/v1/risings
-        put ':id', to: 'risings#update'       # PUT /api/v1/risings/:id
-        delete ':id', to: 'risings#destroy'   # DELETE /api/v1/risings/:id
+
+        resources :risings, only: [:index, :show, :create, :update, :destroy]
+
+        # get '', to: 'risings#index'           # GET /api/v1/risings
+        # get ':id', to: 'risings#show'         # GET /api/v1/risings/:id
+        # post '', to: 'risings#create'         # POST /api/v1/risings
+        # put ':id', to: 'risings#update'       # PUT /api/v1/risings/:id
+        # delete ':id', to: 'risings#destroy'   # DELETE /api/v1/risings/:id
         put ':id/toggle-display', to: 'risings#toggle_display'       # PUT /api/v1/risings/:id
       end
 
       namespace :public do
+        # get "announcements/index"
+        # get "announcements/show"
         get 'rising-items', to: 'rising_items#index'  # GET /api/v1/public/risings-items
         get 'rising-items/:id', to: 'rising_items#show' # GET /api/v1/public/risings-items/:id
+
+        resources :announcements, only: [:index, :show]
+
       end
 
-      # ユーザー関連
-      resources :users, only: [:index, :show, :update]
     end
   end
 
