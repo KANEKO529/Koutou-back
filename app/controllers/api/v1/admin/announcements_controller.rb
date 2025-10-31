@@ -120,6 +120,27 @@ class Api::V1::Admin::AnnouncementsController < ApplicationController
     }, status: :internal_server_error
   end
 
+  def toggle_publish
+    @announcement = Announcement.find(params[:id])
+    # 現在のstatusを反転
+    new_status = !@announcement.status
+  
+    if @announcement.update(status: new_status)
+      render json: {
+        status: 'success',
+        message: "お知らせを#{new_status ? '公開' : '下書き'}にしました",
+        data: announcement_data(@announcement)
+      }
+    else
+      render json: {
+        status: 'error',
+        message: '公開状態の変更に失敗しました',
+        errors: @announcement.errors
+      }, status: :unprocessable_entity
+    end
+  end
+  
+
   private
 
   def announcement_params
