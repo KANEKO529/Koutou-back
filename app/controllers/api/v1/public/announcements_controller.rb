@@ -1,9 +1,16 @@
 class Api::V1::Public::AnnouncementsController < ApplicationController
   # GET /api/v1/public/announcements
   def index
-    @announcements = Announcement.includes(:tags)
-                                    .where(status: true)
-                                    .order(published_at: :asc, id: :desc)
+    @announcements = Announcement.includes(:tags).where(status: true)
+
+    # 年指定があればフィルタリング
+    if params[:year].present?
+    year = params[:year].to_i
+    @announcements = @announcements.where("EXTRACT(YEAR FROM published_at) = ?", year)
+    end
+
+    # ソート順（共通）
+    @announcements = @announcements.order(published_at: :desc, id: :desc)
 
     render json: {
       status: 'success',
