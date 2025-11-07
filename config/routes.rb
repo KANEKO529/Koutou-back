@@ -34,12 +34,20 @@ Rails.application.routes.draw do
       end
 
       namespace :items do
-        resources :items, only: [:index, :show, :create, :update, :destroy]
+        get '', to: 'items#index' # GET /api/v1/items
+        get ':id', to: 'items#show' # GET /api/v1/items
+        post '', to: 'items#create' # GET /api/v1/items
+        delete ':id', to: 'items#destroy' # GET /api/v1/items
+        put ':id', to: 'items#update' # GET /api/v1/items
       end
 
       namespace :risings do
 
-        resources :risings, only: [:index, :show, :create, :update, :destroy]
+        get '', to: 'risings#index' # GET /api/v1/risingss
+        get ':id', to: 'risings#show' # GET /api/v1/risingss
+        post '', to: 'risings#create' # GET /api/v1/risingss
+        delete ':id', to: 'risings#destroy' # GET /api/v1/risingss
+        put ':id', to: 'risings#update' # GET /api/v1/risingss
         put ':id/toggle-display', to: 'risings#toggle_display'       # PUT /api/v1/risings/:id
       end
 
