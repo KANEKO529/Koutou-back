@@ -13,25 +13,23 @@ class RisingInformation < ApplicationRecord
 
     # スコープ
     scope :displayed, -> { where(is_displayed: true) }
-    # scope :by_appreciation_rate, -> { order(appreciation_rate: :desc) }
 
-    # キーワード検索スコープ（OR検索）
     scope :search_by_keyword, ->(keyword) {
         return all if keyword.blank?
-        
-        # スペースで区切って複数キーワードに対応
+
+        # 全角・半角スペースで分割して配列化
         keywords = keyword.split(/[\s　]+/).reject(&:blank?)
         return all if keywords.empty?
-        
-        # 各キーワードでOR検索
-        conditions = keywords.map { |kw|
+
+        # items と rising_informations の両方を対象に部分一致検索
+        joins(:item).where(
+            keywords.map { |kw|
             sanitized = sanitize_sql_like(kw)
-            "(items.item_name ILIKE '%#{sanitized}%' OR 
-              items.model_number ILIKE '%#{sanitized}%' OR 
-              rising_informations.description ILIKE '%#{sanitized}%')"
-        }.join(' OR ')
-        
-        joins(:item).where(conditions)
+            "(items.item_name ILIKE '%#{sanitized}%' OR
+                items.model_number ILIKE '%#{sanitized}%' OR
+                rising_informations.description ILIKE '%#{sanitized}%')"
+            }.join(' AND ')
+        )
     }
 
     # 計算メソッド

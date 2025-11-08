@@ -3,18 +3,77 @@ class Api::V1::Public::RisingItemsController < ApplicationController
 
   # GET /api/v1/public/rising-items
   def index
-    @rising_items = RisingInformation.displayed
 
-    # キーワード検索（includesの前に適用）
+    @rising_items = RisingInformation.displayed.includes(:item)
+
+    # --- キーワード検索 ---
     if params[:keyword].present?
       @rising_items = @rising_items.search_by_keyword(params[:keyword])
     end
-    
-    # includesは最後に適用
-    # @rising_items = @rising_items.includes(:item)
-    # puts "#{@rising_items.includes(:item)}"
-    @rising_items = @rising_items.includes(:item).order('rising_informations.id DESC')
 
+    # --- 絞り込み処理 ---
+    # 発売日範囲
+    if params[:from].present?
+      @rising_items = @rising_items.joins(:item)
+                                  .where("items.release_date >= ?", params[:from])
+    end
+
+    if params[:to].present?
+      @rising_items = @rising_items.joins(:item)
+                                  .where("items.release_date <= ?", params[:to])
+    end
+
+    # 中古価格帯
+    if params[:price_min].present?
+      @rising_items = @rising_items.where("rising_informations.market_price >= ?", params[:price_min].to_i)
+    end
+
+    if params[:price_max].present?
+      @rising_items = @rising_items.where("rising_informations.market_price <= ?", params[:price_max].to_i)
+    end
+
+    # 高騰率範囲
+    if params[:appreciation_min].present?
+      @rising_items = @rising_items.where("rising_informations.appreciation_rate >= ?", params[:appreciation_min].to_f)
+    end
+
+    if params[:appreciation_max].present?
+      @rising_items = @rising_items.where("rising_informations.appreciation_rate <= ?", params[:appreciation_max].to_f)
+    end
+
+    # 定価情報あり
+    if params[:has_regular_price] == "true"
+      @rising_items = @rising_items.joins(:item).where.not(items: { regular_price: [nil, 0] })
+    end
+    # 説明文あり
+    if params[:has_description] == "true"
+      @rising_items = @rising_items.where.not(description: [nil, ""])
+    end
+
+    # 型番あり
+    if params[:has_model_number] == "true"
+      @rising_items = @rising_items.joins(:item).where.not(items: { model_number: [nil, ""] })
+    end
+    
+    # --- ソート設定 ---
+    sort_column = params[:sort].presence_in(%w[
+      appreciation_rate
+      release_date
+      regular_price
+      market_price
+    ]) || "id"
+    
+    sort_order = params[:order].to_s.downcase.presence_in(%w[asc desc]) || "desc"
+    
+    # --- 並び替え処理 ---
+    @rising_items =
+      case sort_column
+      when "release_date", "regular_price"
+        @rising_items.joins(:item)
+                     .order(Arel.sql("items.#{sort_column} #{sort_order} NULLS LAST"))
+      else
+        @rising_items.order(Arel.sql("rising_informations.#{sort_column} #{sort_order} NULLS LAST"))
+      end
     
     render json: {
       status: 'success',
