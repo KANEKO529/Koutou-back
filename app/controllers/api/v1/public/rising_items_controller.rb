@@ -12,17 +12,21 @@ class Api::V1::Public::RisingItemsController < ApplicationController
     end
 
     # --- 絞り込み処理 ---
-    # 発売日範囲
+    # --- 発売年範囲指定 ---
     if params[:from].present?
+      from_year = params[:from].to_i
+      from_date = Date.new(from_year, 1, 1) rescue nil
       @rising_items = @rising_items.joins(:item)
-                                  .where("items.release_date >= ?", params[:from])
+                                  .where("items.release_date >= ?", from_date) if from_date
     end
-
+    
     if params[:to].present?
+      to_year = params[:to].to_i
+      to_date = Date.new(to_year, 12, 31) rescue nil
       @rising_items = @rising_items.joins(:item)
-                                  .where("items.release_date <= ?", params[:to])
+                                  .where("items.release_date <= ?", to_date) if to_date
     end
-
+    
     # 中古価格帯
     if params[:price_min].present?
       @rising_items = @rising_items.where("rising_informations.market_price >= ?", params[:price_min].to_i)
