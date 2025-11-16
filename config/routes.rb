@@ -21,13 +21,13 @@ Rails.application.routes.draw do
         post 'rising-items', to: 'rising_items#create'# POST /api/v1/admin/rising-items/:id    
         put 'rising-items/:id', to: 'rising_items#update'# PUT /api/v1/admin/rising-items/:id
 
-        # キーワード検索
-        # get 'rising-items?keyword=', to: 'rising_items#index' # GET /api/v1/admin/rising-items
-
         # resources :users, only: [:index, :update] # 優先度低git push -u origin feature/ブランチ名
 
         resources :announcements, only: [:index, :show, :create, :update, :destroy]
         put 'announcements/:id/toggle-publish', to: 'announcements#toggle_publish'       # PUT /api/v1/risings/:id
+
+        resources :recommend_articles, only: [:index, :show, :create, :update, :destroy]
+        put 'recommend_articles/:id/toggle-status', to: 'recommend_articles#toggle_status'       # PUT /api/v1/risings/:id
 
         resources :tags, only: [:index, :show, :create, :update, :destroy]
 
@@ -56,7 +56,7 @@ Rails.application.routes.draw do
         get 'rising-items/:id', to: 'rising_items#show' # GET /api/v1/public/risings-items/:id
 
         resources :announcements, only: [:index, :show]
-
+        resources :recommend_articles, only: [:index]
       end
 
     end
