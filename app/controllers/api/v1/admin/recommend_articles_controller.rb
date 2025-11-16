@@ -3,7 +3,8 @@ class Api::V1::Admin::RecommendArticlesController < ApplicationController
   
     # 一覧
     def index
-      articles = RecommendArticle.includes(:featured_articles, :tags)
+      articles = RecommendArticle.includes(:featured_articles, :tags).order(id: :desc)
+      
       render json: {
         status: "success",
         data: articles.map { |a| serialize_admin_article(a) }
