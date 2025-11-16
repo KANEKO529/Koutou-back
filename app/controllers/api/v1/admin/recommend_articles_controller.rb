@@ -82,7 +82,7 @@ class Api::V1::Admin::RecommendArticlesController < ApplicationController
   
     def serialize_admin_article(article)
       meta = Rails.cache.fetch("meta:#{article.article_url}", expires_in: 12.hours) do
-        MetadataFetcheService.fetch(article.article_url)
+        MetadataFetchService.fetch(article.article_url)
       end
   
       {

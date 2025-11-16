@@ -4,7 +4,7 @@ class FeaturedArticle < ApplicationRecord
   
     enum :section_name, {
         top_recommendation: 'top_recommendation'
-    }
+    }, allow_nil: true
   
     validates :position, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 end
