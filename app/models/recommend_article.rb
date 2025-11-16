@@ -1,0 +1,2 @@
+class RecommendArticle < ApplicationRecord
+end

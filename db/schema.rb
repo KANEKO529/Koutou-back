@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_31_004438) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_16_103857) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -47,6 +47,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_31_004438) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "featured_articles", force: :cascade do |t|
+    t.bigint "recommend_article_id", null: false
+    t.bigint "tag_id"
+    t.integer "position", default: 0, null: false
+    t.string "section_name", null: false
+    t.string "created_by_author_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recommend_article_id"], name: "index_featured_articles_on_recommend_article_id"
+    t.index ["tag_id"], name: "index_featured_articles_on_tag_id"
+  end
+
   create_table "items", force: :cascade do |t|
     t.string "item_name"
     t.string "model_number"
@@ -57,6 +69,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_31_004438) do
     t.string "image_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "recommend_articles", force: :cascade do |t|
+    t.string "article_url", null: false
+    t.boolean "status", default: false, null: false
+    t.string "created_by_author_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_url"], name: "index_recommend_articles_on_article_url", unique: true
   end
 
   create_table "rising_informations", force: :cascade do |t|
@@ -91,4 +112,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_31_004438) do
 
   add_foreign_key "announcement_tags", "announcements"
   add_foreign_key "announcement_tags", "tags"
+  add_foreign_key "featured_articles", "recommend_articles"
+  add_foreign_key "featured_articles", "tags"
 end
