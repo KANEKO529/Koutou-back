@@ -43,39 +43,54 @@
 # after_fork do |server, worker|
 #   defined?(ActiveRecord::Base) and ActiveRecord::Base.establish_connection
 # end
-
 # config/unicorn.rb
 
-# ワーカー数（1GB RAMなら 1 が安定）
-worker_processes 1
+# ワーカーの数
+$worker  = 1
 
-# タイムアウト
-timeout 30
+# 何秒経過すればワーカーを削除するのか
+$timeout = 30
 
-# パス設定
-app_dir = "/var/www/mywebapp/KotoApp/current"
-shared_dir = "/var/www/mywebapp/KotoApp/shared"
-
-working_directory app_dir
+# 自分のアプリケーション名、current がつくことに注意
+$app_dir    = "/var/www/mywebapp/KotoApp/current"
+$shared_dir = "/var/www/mywebapp/KotoApp/shared"
 
 # ソケット
-listen File.expand_path("tmp/sockets/unicorn.sock", shared_dir)
+$listen  = File.expand_path("tmp/sockets/unicorn.sock", $shared_dir)
 
 # PID
-pid File.expand_path("tmp/pids/unicorn.pid", shared_dir)
+$pid     = File.expand_path("tmp/pids/unicorn.pid", $shared_dir)
 
-# ログファイル
-log_path = File.expand_path("log/unicorn.log", shared_dir)
-stderr_path log_path
-stdout_path log_path
+# ログ出力先
+$std_log = File.expand_path("log/unicorn.log", $shared_dir)
 
-# メモリ削減のため preload_app は false
+# 上記で設定したものが適用されるよう定義
+worker_processes  $worker
+working_directory $app_dir
+
+stderr_path $std_log
+stdout_path $std_log
+
+timeout $timeout
+listen  $listen
+pid     $pid
+
+# ★ メモリ 1GB なので preload_app は false 推奨
 preload_app false
 
-before_fork do |_server, _worker|
-  defined?(ActiveRecord::Base) && ActiveRecord::Base.connection.disconnect!
+# fork 前
+before_fork do |server, worker|
+  defined?(ActiveRecord::Base) and ActiveRecord::Base.connection.disconnect!
+  old_pid = "#{server.config[:pid]}.oldbin"
+  if old_pid != server.pid
+    begin
+      Process.kill "QUIT", File.read(old_pid).to_i
+    rescue Errno::ENOENT, Errno::ESRCH
+    end
+  end
 end
 
-after_fork do |_server, _worker|
-  defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
+# fork 後
+after_fork do |server, worker|
+  defined?(ActiveRecord::Base) and ActiveRecord::Base.establish_connection
 end
