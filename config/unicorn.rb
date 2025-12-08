@@ -12,7 +12,8 @@ $listen  = File.expand_path 'tmp/sockets/unicorn.sock', $shared_dir
 #PIDの管理ファイルディレクトリ
 $pid     = File.expand_path 'tmp/pids/unicorn.pid', $shared_dir
 #エラーログを吐き出すファイルのディレクトリ
-$std_log = File.expand_path 'log/unicorn.log', $app_dir
+# $std_log = File.expand_path 'log/unicorn.log', $app_dir
+$std_log = File.expand_path 'log/unicorn.log', $shared_dir
 
 # 上記で設定したものが適応されるよう定義
 worker_processes  $worker
