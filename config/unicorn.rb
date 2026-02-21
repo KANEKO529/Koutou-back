@@ -52,8 +52,8 @@ $worker  = 1
 $timeout = 30
 
 # 自分のアプリケーション名、current がつくことに注意
-$app_dir    = "/var/www/App/kotoapp/backend/current"
-$shared_dir = "/var/www/App/kotoapp/backend/shared"
+$app_dir    = "/home/kotoapp/App/kotoapp/backend/current"
+$shared_dir = "/home/kotoapp/App/kotoapp/backend/shared"
 
 # ソケット
 $listen  = File.expand_path("tmp/sockets/unicorn.sock", $shared_dir)
@@ -94,3 +94,5 @@ end
 after_fork do |server, worker|
   defined?(ActiveRecord::Base) and ActiveRecord::Base.establish_connection
 end
+
+
