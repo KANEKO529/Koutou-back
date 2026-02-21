@@ -52,8 +52,8 @@ $worker  = 1
 $timeout = 30
 
 # 自分のアプリケーション名、current がつくことに注意
-$app_dir    = "/var/www/mywebapp/KotoApp/current"
-$shared_dir = "/var/www/mywebapp/KotoApp/shared"
+$app_dir    = "/var/www/App/kotoapp/backend/current"
+$shared_dir = "/var/www/App/kotoapp/backend/shared"
 
 # ソケット
 $listen  = File.expand_path("tmp/sockets/unicorn.sock", $shared_dir)
