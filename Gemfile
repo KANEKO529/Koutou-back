@@ -9,12 +9,13 @@ gem "sqlite3", ">= 2.1"
 # Use the Puma web server [https://github.com/puma/puma]
 
 # Webサーバー
-gem "puma", "~> 6.0", group: [:development, :test]  # 開発環境では Puma を使用
+#gem "puma", "~> 6.0", group: [:development, :test]  # 開発環境では Puma を使用
 # 本番環境のみ Unicorn を使用
-group :production do
-  gem "unicorn"
-end
+#group :production do
+ # gem "unicorn"
+#end
 
+gem "puma", "~> 6.0"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
