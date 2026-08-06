@@ -12,9 +12,21 @@ class Api::V1::Internal::ItemsController < ApplicationController
       return
     end
 
-    item = Item.includes(:item_market_prices).find_by(model_number: model_number)
+    # T6：Railsの商品検索開始
+    t6_started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
+    item = Item.find_by(model_number: model_number)
 
     if item.nil?
+      t6_ms = elapsed_ms(t6_started_at)
+    
+      Rails.logger.info(
+        "[OCR_MEASUREMENT] " \
+        "model_number=#{model_number} " \
+        "T6_ms=#{format('%.3f', t6_ms)} " \
+        "status=item_not_found"
+      )
+    
       render json: {
         status: "error",
         message: "商品が見つかりません"
@@ -25,6 +37,15 @@ class Api::V1::Internal::ItemsController < ApplicationController
     latest_market_price_info = item.item_market_prices
                                    .order(recorded_at: :desc, created_at: :desc)
                                    .first
+    # T6：商品情報・最新相場情報の取得完了
+    t6_ms = elapsed_ms(t6_started_at)
+
+    Rails.logger.info(
+      "[OCR_MEASUREMENT] " \
+      "model_number=#{model_number} " \
+      "T6_ms=#{format('%.3f', t6_ms)} " \
+      "status=success"
+    )
 
     render json: {
       status: "success",
@@ -43,6 +64,11 @@ class Api::V1::Internal::ItemsController < ApplicationController
   end
 
   private
+
+  def elapsed_ms(started_at)
+    finished_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    (finished_at - started_at) * 1000
+  end
 
   def verify_internal_api_key
     api_key = request.headers["X-Internal-API-Key"].to_s
