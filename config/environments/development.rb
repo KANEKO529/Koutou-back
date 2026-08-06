@@ -5,6 +5,7 @@ Rails.application.configure do
 
   config.hosts << ENV.fetch("CORS_ORIGINS_API")
   # config.hosts << /.*\.ngrok-free\.app/
+  config.hosts << /.*\.ngrok\.dev/
 
 
     # ログレベルを debug に設定

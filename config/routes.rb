@@ -31,6 +31,8 @@ Rails.application.routes.draw do
 
         resources :tags, only: [:index, :show, :create, :update, :destroy]
 
+        resources :item_market_prices, only: [:index, :show, :create, :update, :destroy]
+
       end
 
       namespace :items do
@@ -39,6 +41,12 @@ Rails.application.routes.draw do
         post '', to: 'items#create' # GET /api/v1/items
         delete ':id', to: 'items#destroy' # GET /api/v1/items
         put ':id', to: 'items#update' # GET /api/v1/items
+
+      #  post "/search_by_model_number", to: "items#search_by_model_number"
+      end
+
+      namespace :internal do
+        get "items/search_by_model_number", to: "items#search_by_model_number"
       end
 
       namespace :risings do

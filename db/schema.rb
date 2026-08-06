@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_16_123345) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_07_114522) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -57,6 +57,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_123345) do
     t.datetime "updated_at", null: false
     t.index ["recommend_article_id"], name: "index_featured_articles_on_recommend_article_id"
     t.index ["tag_id"], name: "index_featured_articles_on_tag_id"
+  end
+
+  create_table "item_market_prices", force: :cascade do |t|
+    t.bigint "item_id", null: false
+    t.integer "market_price"
+    t.datetime "recorded_at"
+    t.text "memo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id", "recorded_at"], name: "index_item_market_prices_on_item_id_and_recorded_at"
+    t.index ["item_id"], name: "index_item_market_prices_on_item_id"
+    t.index ["recorded_at"], name: "index_item_market_prices_on_recorded_at"
   end
 
   create_table "items", force: :cascade do |t|
@@ -114,4 +126,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_123345) do
   add_foreign_key "announcement_tags", "tags"
   add_foreign_key "featured_articles", "recommend_articles"
   add_foreign_key "featured_articles", "tags"
+  add_foreign_key "item_market_prices", "items"
 end
