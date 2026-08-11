@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_07_114522) do
+ActiveRecord::Schema[8.0].define(version: 2026_08_11_030308) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -24,7 +24,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_07_114522) do
   enable_extension "extensions.pg_stat_statements"
   enable_extension "extensions.pgcrypto"
   enable_extension "extensions.uuid-ossp"
-  enable_extension "graphql.pg_graphql"
+  enable_extension "extensions.vector"
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vault.supabase_vault"
 
@@ -57,6 +57,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_07_114522) do
     t.datetime "updated_at", null: false
     t.index ["recommend_article_id"], name: "index_featured_articles_on_recommend_article_id"
     t.index ["tag_id"], name: "index_featured_articles_on_tag_id"
+  end
+
+  create_table "item_embeddings", force: :cascade do |t|
+    t.bigint "item_id", null: false
+    t.vector "embedding", limit: 384, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_item_embeddings_on_item_id"
   end
 
   create_table "item_market_prices", force: :cascade do |t|
@@ -126,5 +134,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_07_114522) do
   add_foreign_key "announcement_tags", "tags"
   add_foreign_key "featured_articles", "recommend_articles"
   add_foreign_key "featured_articles", "tags"
+  add_foreign_key "item_embeddings", "items"
   add_foreign_key "item_market_prices", "items"
 end

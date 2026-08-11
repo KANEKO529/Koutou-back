@@ -64,3 +64,5 @@ gem 'pg'
 gem 'clerk-sdk-ruby', require: "clerk"
 
 gem 'svix'
+
+gem "neighbor"
