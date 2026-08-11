@@ -1,5 +1,7 @@
 class Api::V1::Internal::ItemsController < ApplicationController
-  before_action :verify_internal_api_key, only: [:search_by_model_number]
+  EMBEDDING_DIMENSION = 384
+
+  before_action :verify_internal_api_key, only: [:search_by_model_number, :create_embedding]
 
   def search_by_model_number
     model_number = params[:model_number].to_s.strip.upcase
@@ -63,7 +65,52 @@ class Api::V1::Internal::ItemsController < ApplicationController
     }, status: :ok
   end
 
+  def create_embedding
+    model_number = params[:model_number].to_s.strip.upcase
+
+    if model_number.blank?
+      render json: {
+        status: "error",
+        message: "model_number is required"
+      }, status: :bad_request
+      return
+    end
+
+    item = Item.find_by(model_number: model_number)
+
+    if item.nil?
+      render json: {
+        status: "error",
+        message: "商品が見つかりません"
+      }, status: :not_found
+      return
+    end
+
+    embedding = params[:embedding]
+
+    unless valid_embedding?(embedding)
+      render json: {
+        status: "error",
+        message: "embedding must be an array of #{EMBEDDING_DIMENSION} numbers"
+      }, status: :bad_request
+      return
+    end
+
+    item_embedding = item.item_embeddings.create!(embedding: embedding)
+
+    render json: {
+      success: true,
+      embeddingId: item_embedding.id
+    }, status: :created
+  end
+
   private
+
+  def valid_embedding?(embedding)
+    embedding.is_a?(Array) &&
+      embedding.length == EMBEDDING_DIMENSION &&
+      embedding.all? { |value| value.is_a?(Numeric) }
+  end
 
   def elapsed_ms(started_at)
     finished_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
