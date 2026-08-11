@@ -16,6 +16,7 @@ class Item < ApplicationRecord
     # アソシエーション
     has_many :rising_informations, dependent: :destroy
     has_many :item_market_prices, dependent: :destroy
+    has_many :item_embeddings, dependent: :destroy
     
     # 現在表示中の高騰情報を取得
     def current_rising_info
