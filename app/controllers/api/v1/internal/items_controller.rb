@@ -1,7 +1,7 @@
 class Api::V1::Internal::ItemsController < ApplicationController
   EMBEDDING_DIMENSION = 384
 
-  before_action :verify_internal_api_key, only: [:search_by_model_number, :create_embedding]
+  before_action :verify_internal_api_key, only: [:search_by_model_number, :create_embedding, :search_by_embedding]
 
   def search_by_model_number
     model_number = params[:model_number].to_s.strip.upcase
@@ -102,6 +102,39 @@ class Api::V1::Internal::ItemsController < ApplicationController
       success: true,
       embeddingId: item_embedding.id
     }, status: :created
+  end
+
+  def search_by_embedding
+    embedding = params[:embedding]
+
+    unless valid_embedding?(embedding)
+      render json: {
+        status: "error",
+        message: "embedding must be an array of #{EMBEDDING_DIMENSION} numbers"
+      }, status: :bad_request
+      return
+    end
+
+    search_results = ItemEmbeddingSearchService.call(embedding: embedding)
+
+    items_by_id = Item.where(id: search_results.map { |result| result[:item_id] }).index_by(&:id)
+
+    if search_results.any? { |result| items_by_id[result[:item_id]].nil? }
+      render json: {
+        status: "error",
+        message: "商品情報の取得に失敗しました"
+      }, status: :internal_server_error
+      return
+    end
+
+    render json: {
+      results: search_results.map do |result|
+        {
+          modelNumber: items_by_id[result[:item_id]].model_number,
+          similarity: result[:similarity]
+        }
+      end
+    }, status: :ok
   end
 
   private

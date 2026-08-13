@@ -48,6 +48,7 @@ Rails.application.routes.draw do
       namespace :internal do
         get "items/search_by_model_number", to: "items#search_by_model_number"
         post "items/:model_number/embeddings", to: "items#create_embedding"
+        post "items/search_by_embedding", to: "items#search_by_embedding"
       end
 
       namespace :risings do
