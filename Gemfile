@@ -15,7 +15,7 @@ gem "sqlite3", ">= 2.1"
  # gem "unicorn"
 #end
 
-gem "puma", "~> 6.0"
+gem "puma", "~> 8.0"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
