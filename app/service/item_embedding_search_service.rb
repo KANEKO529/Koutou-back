@@ -1,6 +1,6 @@
 class ItemEmbeddingSearchService
   EMBEDDING_DIMENSION = 384
-  DEFAULT_TOP_K = 3
+  DEFAULT_TOP_K = 10
   DEFAULT_THRESHOLD = 0.0
 
   def self.call(embedding:, top_k: DEFAULT_TOP_K, threshold: DEFAULT_THRESHOLD)
