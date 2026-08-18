@@ -32,3 +32,4 @@
 /config/master.key
 
 # prod-ca-2021.crt
+/lib/model_number_list.csv
